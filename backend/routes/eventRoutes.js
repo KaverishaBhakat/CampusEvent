@@ -3,14 +3,14 @@ const Event = require("../models/event");
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const event = await Event.create(req.body);
+    const events = await Event.find();
 
-    res.status(201).json(event);
+    res.status(200).json(events);
   } catch (error) {
     res.status(500).json({
-      message: "Failed to create event",
+      message: "Failed to fetch events",
       error: error.message,
     });
   }
