@@ -1,0 +1,46 @@
+.event-details {
+  padding: 40px 24px 96px;
+  max-width: 720px;
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--color-muted);
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.back-link:hover {
+  color: var(--color-ink);
+}
+
+.event-details-card {
+  background: var(--color-paper-raised);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 36px;
+}
+
+.event-details-card h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin: 10px 0 12px;
+}
+
+.event-details-location {
+  color: var(--color-teal);
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+
+.event-details-description {
+  color: var(--color-ink);
+  line-height: 1.7;
+  margin: 0 0 28px;
+  white-space: pre-wrap;
+}
+
+.event-details-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
