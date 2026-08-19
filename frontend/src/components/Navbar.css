@@ -78,9 +78,21 @@
   min-width: 0;
 }
 
+.navbar-search-input:focus,
+.navbar-search-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .navbar-search-input::placeholder {
   color: var(--color-muted);
   font-size: 0.88rem;
+}
+
+.navbar-search-clear:focus,
+.navbar-search-clear:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .navbar-search-clear {

@@ -46,8 +46,20 @@
   padding: 6px 0;
 }
 
+.events-search-input:focus,
+.events-search-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .events-search-input::placeholder {
   color: #9898a8;
+}
+
+.events-clear-btn:focus,
+.events-clear-btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .events-clear-btn {
