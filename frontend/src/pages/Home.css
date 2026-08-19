@@ -27,6 +27,7 @@
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
+  margin-top: 28px;
 }
 
 .hero-visual {
@@ -67,6 +68,11 @@
   }
 
   .hero-subtext {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-search-wrapper {
     margin-left: auto;
     margin-right: auto;
   }

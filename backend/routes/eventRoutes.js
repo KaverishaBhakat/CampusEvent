@@ -5,7 +5,31 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const events = await Event.find();
+    const { search, date } = req.query;
+    const queryFilter = {};
+
+    if (search) {
+      const regex = new RegExp(search, "i");
+      queryFilter.$or = [
+        { title: regex },
+        { description: regex },
+        { location: regex },
+      ];
+    }
+
+    if (date) {
+      const startDate = new Date(date);
+      if (!isNaN(startDate.getTime())) {
+        const endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 1);
+        queryFilter.date = {
+          $gte: startDate,
+          $lt: endDate,
+        };
+      }
+    }
+
+    const events = await Event.find(queryFilter);
 
     res.status(200).json(events);
   } catch (error) {

@@ -46,9 +46,10 @@ function Home() {
               From tech fests to open mics, CampusEvent brings every club, department, and
               organizer's events onto one board — so nothing good happens without you knowing.
             </p>
+
             <div className="hero-actions">
               <Link to="/events" className="btn btn-primary">
-                Explore Events
+                Explore All Events
               </Link>
               <Link to="/create-event" className="btn btn-outline">
                 Create Event
