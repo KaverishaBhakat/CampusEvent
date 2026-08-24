@@ -7,6 +7,7 @@ import CreateEvent from './pages/CreateEvent.jsx'
 import EditEvent from './pages/EditEvent.jsx'
 import About from './pages/About.jsx'
 import './App.css'
+import Login from "./pages/login.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/edit-event/:id" element={<EditEvent />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
           <Route
             path="*"
             element={
