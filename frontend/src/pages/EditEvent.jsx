@@ -47,8 +47,19 @@ function EditEvent() {
   }
 
   return (
-    <main className="container">
-      <div className="page-header" style={{ padding: '48px 0 24px' }}>
+    <main className="container" style={{ maxWidth: 760, paddingBottom: 80 }}>
+      <div style={{ paddingTop: 36 }}>
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm"
+          style={{ padding: '0 4px', marginBottom: 12 }}
+          onClick={() => navigate(`/events/${id}`)}
+        >
+          ← Back to Event
+        </button>
+      </div>
+
+      <div className="page-header" style={{ padding: '0 0 24px' }}>
         <p className="eyebrow">Update the listing</p>
         <h1>Edit Event</h1>
       </div>

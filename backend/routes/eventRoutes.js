@@ -1,15 +1,26 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const Event = require("../models/event");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+function isValidObjectId(id) {
+  return mongoose.Types.ObjectId.isValid(id) && String(new mongoose.Types.ObjectId(id)) === id;
+}
+
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
+// GET /api/events - Retrieve events with optional search and date filtering
+router.get("/", async (req, res, next) => {
   try {
     const { search, date } = req.query;
     const queryFilter = {};
 
-    if (search) {
-      const regex = new RegExp(search, "i");
+    if (search && search.trim()) {
+      const safeSearch = escapeRegex(search.trim());
+      const regex = new RegExp(safeSearch, "i");
       queryFilter.$or = [
         { title: regex },
         { description: regex },
@@ -29,80 +40,135 @@ router.get("/", async (req, res) => {
       }
     }
 
-    const events = await Event.find(queryFilter);
+    const events = await Event.find(queryFilter).sort({ date: 1 });
 
     res.status(200).json(events);
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to fetch events",
-      error: error.message,
-    });
+    next(error);
   }
 });
 
-router.post("/", async (req, res) => {
+// POST /api/events - Create new event
+router.post("/", async (req, res, next) => {
   try {
-    const event = await Event.create(req.body);
+    const { title, description, date, location } = req.body;
+
+    if (!title || !title.trim()) {
+      return res.status(400).json({ message: "Event title is required" });
+    }
+    if (!description || !description.trim()) {
+      return res.status(400).json({ message: "Event description is required" });
+    }
+    if (!date) {
+      return res.status(400).json({ message: "Event date is required" });
+    }
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      return res.status(400).json({ message: "Invalid event date format" });
+    }
+    if (!location || !location.trim()) {
+      return res.status(400).json({ message: "Event location is required" });
+    }
+
+    const event = await Event.create({
+      title: title.trim(),
+      description: description.trim(),
+      date: parsedDate,
+      location: location.trim(),
+    });
 
     res.status(201).json(event);
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to create event",
-      error: error.message,
-    });
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+    next(error);
   }
 });
 
-router.get("/:id", async (req, res) => {
+// GET /api/events/:id - Fetch single event by ID
+router.get("/:id", async (req, res, next) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid event ID format" });
+    }
+
     const event = await Event.findById(req.params.id);
 
     if (!event) {
-      return res.status(404).json({
-        message: "Event not found",
-      });
+      return res.status(404).json({ message: "Event not found" });
     }
 
     res.status(200).json(event);
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to fetch event",
-      error: error.message,
-    });
+    next(error);
   }
 });
 
-router.put("/:id", async (req, res) => {
+// PUT /api/events/:id - Update event by ID
+router.put("/:id", async (req, res, next) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid event ID format" });
+    }
+
+    const updateData = {};
+    if (req.body.title !== undefined) {
+      if (!req.body.title.trim()) {
+        return res.status(400).json({ message: "Event title cannot be empty" });
+      }
+      updateData.title = req.body.title.trim();
+    }
+    if (req.body.description !== undefined) {
+      if (!req.body.description.trim()) {
+        return res.status(400).json({ message: "Event description cannot be empty" });
+      }
+      updateData.description = req.body.description.trim();
+    }
+    if (req.body.date !== undefined) {
+      const parsedDate = new Date(req.body.date);
+      if (isNaN(parsedDate.getTime())) {
+        return res.status(400).json({ message: "Invalid event date format" });
+      }
+      updateData.date = parsedDate;
+    }
+    if (req.body.location !== undefined) {
+      if (!req.body.location.trim()) {
+        return res.status(400).json({ message: "Event location cannot be empty" });
+      }
+      updateData.location = req.body.location.trim();
+    }
+
     const event = await Event.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
 
     if (!event) {
-      return res.status(404).json({
-        message: "Event not found",
-      });
+      return res.status(404).json({ message: "Event not found" });
     }
 
     res.status(200).json(event);
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to update event",
-      error: error.message,
-    });
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+    next(error);
   }
 });
 
-router.delete("/:id", async (req, res) => {
+// DELETE /api/events/:id - Delete event by ID
+router.delete("/:id", async (req, res, next) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ message: "Invalid event ID format" });
+    }
+
     const event = await Event.findByIdAndDelete(req.params.id);
 
     if (!event) {
-      return res.status(404).json({
-        message: "Event not found",
-      });
+      return res.status(404).json({ message: "Event not found" });
     }
 
     res.status(200).json({
@@ -110,10 +176,7 @@ router.delete("/:id", async (req, res) => {
       event,
     });
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to delete event",
-      error: error.message,
-    });
+    next(error);
   }
 });
 

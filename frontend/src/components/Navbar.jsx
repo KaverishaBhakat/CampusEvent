@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext.jsx'
 import './Navbar.css'
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const { user, isAuthenticated, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [searchParams] = useSearchParams()
@@ -39,12 +41,18 @@ function Navbar() {
     }
   }
 
+  const handleLogout = () => {
+    closeMenu()
+    logout()
+    navigate('/')
+  }
+
   return (
     <header className="navbar">
       <div className="container navbar-inner">
         <Link to="/" className="navbar-logo" onClick={closeMenu}>
           <span className="navbar-logo-mark">CE</span>
-          <span>CampusEvent</span>
+          <span className="navbar-logo-text">CampusEvent</span>
         </Link>
 
         <form className="navbar-search" onSubmit={handleSearchSubmit} role="search">
@@ -67,10 +75,10 @@ function Navbar() {
             id="navbar-search-input"
             type="text"
             className="navbar-search-input"
-            placeholder="Search"
+            placeholder="Search events…"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            aria-label="Search"
+            aria-label="Search events"
             autoComplete="off"
           />
           {searchTerm && (
@@ -96,8 +104,30 @@ function Navbar() {
           <NavLink to="/about" onClick={closeMenu}>
             About
           </NavLink>
+
+          {isAuthenticated ? (
+            <>
+              <NavLink to="/dashboard" onClick={closeMenu} className="navbar-user-link">
+                <span className="navbar-avatar">{user?.name ? user.name.charAt(0).toUpperCase() : 'U'}</span>
+                <span>{user?.name?.split(' ')[0] || 'Dashboard'}</span>
+              </NavLink>
+              <button type="button" onClick={handleLogout} className="btn btn-ghost btn-sm navbar-logout-btn">
+                Log Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="navbar-auth-link" onClick={closeMenu}>
+                Log In
+              </Link>
+              <Link to="/signup" className="navbar-signup-link" onClick={closeMenu}>
+                Sign Up
+              </Link>
+            </>
+          )}
+
           <Link to="/create-event" className="btn btn-primary btn-sm navbar-cta" onClick={closeMenu}>
-            Create Event
+            + Create Event
           </Link>
         </nav>
 

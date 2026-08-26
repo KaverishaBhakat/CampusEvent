@@ -1,13 +1,17 @@
-.event-details {
-  padding: 40px 24px 96px;
-  max-width: 720px;
+.event-details-page {
+  padding: 36px 24px 88px;
+  max-width: 760px;
 }
 
 .back-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--color-muted);
   font-weight: 500;
+  font-size: 0.92rem;
   margin-bottom: 20px;
+  transition: color var(--transition-fast);
 }
 
 .back-link:hover {
@@ -17,30 +21,76 @@
 .event-details-card {
   background: var(--color-paper-raised);
   border: 1px solid var(--color-line);
-  border-radius: var(--radius);
-  padding: 36px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 36px 40px;
 }
 
-.event-details-card h1 {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  margin: 10px 0 12px;
+.event-details-header {
+  margin-bottom: 20px;
 }
 
-.event-details-location {
+.event-details-title {
+  font-size: clamp(1.8rem, 3.2vw, 2.3rem);
+  margin: 10px 0 16px;
+  line-height: 1.2;
+}
+
+.event-details-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-ink-light);
+  background: var(--color-paper-sunken);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+}
+
+.meta-chip svg {
   color: var(--color-teal);
-  font-weight: 600;
-  margin: 0 0 20px;
+}
+
+.event-details-divider {
+  height: 1px;
+  background: var(--color-line-subtle);
+  margin: 24px 0;
+}
+
+.event-details-body h2 {
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+  color: var(--color-ink);
 }
 
 .event-details-description {
-  color: var(--color-ink);
+  color: var(--color-ink-light);
+  font-size: 1rem;
   line-height: 1.7;
-  margin: 0 0 28px;
   white-space: pre-wrap;
+  margin: 0 0 32px;
 }
 
 .event-details-actions {
   display: flex;
+  align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-line-subtle);
+}
+
+@media (max-width: 600px) {
+  .event-details-card {
+    padding: 24px 20px;
+  }
 }
