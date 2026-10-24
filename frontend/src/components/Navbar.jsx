@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
+import logoImg from '../assets/logo.png'
 import './Navbar.css'
 
 function Navbar() {
@@ -51,7 +52,7 @@ function Navbar() {
     <header className="navbar">
       <div className="container navbar-inner">
         <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          <span className="navbar-logo-mark">CE</span>
+          <img src={logoImg} alt="CampusEvent Logo" className="navbar-logo-img" />
           <span className="navbar-logo-text">CampusEvent</span>
         </Link>
 

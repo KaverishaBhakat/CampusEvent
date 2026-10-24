@@ -27,6 +27,23 @@
   flex-shrink: 0;
 }
 
+.navbar-logo-img {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1.5px solid var(--color-line);
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+  display: block;
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.navbar-logo:hover .navbar-logo-img {
+  transform: scale(1.05);
+}
+
 .navbar-logo-mark {
   display: inline-flex;
   align-items: center;

@@ -10,6 +10,7 @@ import Login from './pages/login.jsx'
 import Signup from './pages/signup.jsx'
 import Dashboard from './pages/dashboard.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import logoImg from './assets/logo.png'
 import './App.css'
 
 function App() {
@@ -55,7 +56,10 @@ function App() {
 
       <footer className="footer">
         <div className="container footer-inner">
-          <div>Built for the campus community — <strong>CampusEvent</strong> © {new Date().getFullYear()}</div>
+          <div className="footer-brand">
+            <img src={logoImg} alt="CampusEvent Logo" className="footer-logo-img" />
+            <span>Built for the campus community — <strong>CampusEvent</strong> © {new Date().getFullYear()}</span>
+          </div>
           <div className="footer-links">
             <Link to="/">Home</Link>
             <Link to="/events">Events</Link>

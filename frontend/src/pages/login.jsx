@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import PasswordField from '../components/PasswordField.jsx'
 import { login as loginRequest } from '../api/authApi.js'
 import { useAuth } from '../context/AuthContext.jsx'
+import logoImg from '../assets/logo.png'
 import './auth.css'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -105,7 +106,7 @@ function Login() {
         </Link>
 
         <div className="auth-brand-logo">
-          <span className="auth-brand-logo-mark">CE</span>
+          <img src={logoImg} alt="CampusEvent Logo" className="auth-brand-logo-img" />
           <span>CampusEvent</span>
         </div>
 
